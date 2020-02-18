@@ -1,5 +1,6 @@
-package ca.unb.sportsoptionr.ui.slideshow;
+package ca.unb.sportsoptionr.ui.buy;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,24 +29,14 @@ import org.json.JSONObject;
 
 import ca.unb.sportsoptionr.R;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+public class Buy extends Fragment {
 
-public class SlideshowFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_buy, container, false);
+
         final LinearLayout lay = (LinearLayout) root.findViewById(R.id.LinearOptions);
 
 
@@ -65,7 +56,7 @@ public class SlideshowFragment extends Fragment {
                             for(int i =0;i<resp.length();i++){
                                 JSONObject oneObject = resp.getJSONObject(i);
                                 final Button test = new Button(getContext());
-                                test.setText(oneObject.getString("optionId"));
+                                test.setText("Option: "+oneObject.getString("optionId")+"\nPrice: $"+oneObject.getInt("Price"));
                                 lay.addView(test);
                                 //start basic activity and use put extra for all the important info
                             }
@@ -77,7 +68,7 @@ public class SlideshowFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textView.setText("That didn't work!");
+
             }
         });
 

@@ -1,4 +1,4 @@
-package ca.unb.sportsoptionr.ui.tools;
+package ca.unb.sportsoptionr.ui.stats;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,17 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,23 +27,14 @@ import org.json.JSONObject;
 
 import ca.unb.sportsoptionr.R;
 
-public class ToolsFragment extends Fragment {
+public class Stats extends Fragment {
 
-    private ToolsViewModel toolsViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        toolsViewModel =
-                ViewModelProviders.of(this).get(ToolsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        toolsViewModel.getText().observe(getActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
+        View root = inflater.inflate(R.layout.fragment_stats, container, false);
         final TableLayout lay = root.findViewById(R.id.StatTable);
 
         // Instantiate the RequestQueue.
@@ -155,7 +141,7 @@ public class ToolsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ss",error.getMessage());
-                textView.setText("That didn't work!");
+
             }
         });
 

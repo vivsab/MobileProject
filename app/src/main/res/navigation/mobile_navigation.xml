@@ -3,41 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_profile">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="ca.unb.sportsoptionr.ui.home.HomeFragment"
+        android:id="@+id/nav_profile"
+        android:name="ca.unb.sportsoptionr.ui.profile.Profile"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="ca.unb.sportsoptionr.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_sell"
+        android:name="ca.unb.sportsoptionr.ui.sell.Sell"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_sell" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="ca.unb.sportsoptionr.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_buy"
+        android:name="ca.unb.sportsoptionr.ui.buy.Buy"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_buy" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="ca.unb.sportsoptionr.ui.tools.ToolsFragment"
+        android:id="@+id/nav_stats"
+        android:name="ca.unb.sportsoptionr.ui.stats.Stats"
         android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_stats" />
 
-    <fragment
-        android:id="@+id/nav_share"
-        android:name="ca.unb.sportsoptionr.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="ca.unb.sportsoptionr.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
 </navigation>
