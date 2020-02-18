@@ -14,6 +14,10 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
+    <string name="validate">Validate Pass</string>
+    <string name="SellO">Sell Option</string>
+    <string name="save">Save</string>
+
     <string name="login">Login</string>
     <string name="Register">Sign Up</string>
 
