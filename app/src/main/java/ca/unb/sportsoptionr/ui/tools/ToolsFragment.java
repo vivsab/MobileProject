@@ -118,6 +118,7 @@ public class ToolsFragment extends Fragment {
                                     GF.setText(team.getString("goalsScored"));
                                     GA.setText(team.getString("goalsAgainst"));
                                     Streak.setText(team.getJSONObject("streak").getString("streakCode"));
+                                    Log.e("test",team.getJSONObject("team").getString("name"));
 
                                     GP.setPadding(30,0,0,0);
                                     Wins.setPadding(30,0,0,0);
