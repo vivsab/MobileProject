@@ -73,6 +73,7 @@ public class ToolsFragment extends Fragment {
                                 TextView conference = new TextView(getContext());
                                 conference.setText(oneObject.getJSONObject("division").getString("name"));
                                 conference.setTextColor(Color.RED);
+                                conference.setPadding(0,30,0,0);
                                 rowD.addView(conference);
                                 lay.addView(rowD);
 
@@ -81,6 +82,7 @@ public class ToolsFragment extends Fragment {
                                 for(int k=0;k<header.length;k++){
                                     TextView val = new TextView(getContext());
                                     val.setText(Html.fromHtml(header[k]));
+                                    val.setPadding(30,0,0,0);
                                     rowH.addView(val);
 
                                 }
@@ -105,9 +107,39 @@ public class ToolsFragment extends Fragment {
                                     TextView GA = new TextView(getContext());
                                     TextView Streak = new TextView(getContext());
 
+                                    //setting values
+                                    rank.setText(Integer.toString(j));
                                     teamN.setText(team.getJSONObject("team").getString("name"));
+                                    GP.setText(team.getString("gamesPlayed"));
+                                    Wins.setText(team.getJSONObject("leagueRecord").getString("wins"));
+                                    Losses.setText(team.getJSONObject("leagueRecord").getString("losses"));
+                                    OTL.setText(team.getJSONObject("leagueRecord").getString("ot"));
+                                    Pts.setText(team.getString("points"));
+                                    GF.setText(team.getString("goalsScored"));
+                                    GA.setText(team.getString("goalsAgainst"));
+                                    Streak.setText(team.getJSONObject("streak").getString("streakCode"));
 
+                                    GP.setPadding(30,0,0,0);
+                                    Wins.setPadding(30,0,0,0);
+                                    Losses.setPadding(30,0,0,0);
+                                    OTL.setPadding(30,0,0,0);
+                                    Pts.setPadding(30,0,0,0);
+                                    GF.setPadding(30,0,0,0);
+                                    GA.setPadding(30,0,0,0);
+                                    Streak.setPadding(30,0,0,0);
+
+
+                                    rowT.addView(rank);
                                     rowT.addView(teamN);
+                                    rowT.addView(GP);
+                                    rowT.addView(Wins);
+                                    rowT.addView(Losses);
+                                    rowT.addView(OTL);
+                                    rowT.addView(Pts);
+                                    rowT.addView(GF);
+                                    rowT.addView(GA);
+                                    rowT.addView(Streak);
+
                                     lay.addView(rowT);
 
                                 }
