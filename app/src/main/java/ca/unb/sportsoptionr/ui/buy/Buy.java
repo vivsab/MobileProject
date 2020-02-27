@@ -1,5 +1,7 @@
 package ca.unb.sportsoptionr.ui.buy;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,25 +45,52 @@ public class Buy extends Fragment {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url ="http://5e17926a505bb50014720d41.mockapi.io/option";
-
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
-                        Log.e("sss","ss");
                         try {
                             JSONArray resp = new JSONArray(response);
                             for(int i =0;i<resp.length();i++){
-                                JSONObject oneObject = resp.getJSONObject(i);
+                                final JSONObject oneObject = resp.getJSONObject(i);
                                 final Button test = new Button(getContext());
-                                test.setText("Option: "+oneObject.getString("optionId")+"\nPrice: $"+oneObject.getInt("Price"));
+                                final String optionNum = oneObject.getString("optionId");
+                                final String optionPrice = oneObject.getString("Price");
+                                final String optionOwner = oneObject.getString("owner");
+                                final String optionDate = oneObject.getString("Date").substring(0,oneObject.getString("Date").indexOf('T'));
+
+
+                                test.setText("Option: "+optionNum+"\nPrice: $"+optionPrice);
+                                test.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                        builder.setTitle("Purchase Option "+optionNum)
+                                                .setMessage("Option ID: "+optionNum+"\nPrice: $"+optionPrice+"\nOwner: "+optionOwner+"\nDate of Event: "+optionDate)
+                                                .setCancelable(false)
+                                                .setPositiveButton("Buy", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                    }
+                                                })
+                                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                    }
+                                                });
+                                        //Creating dialog box
+                                        AlertDialog dialog  = builder.create();
+                                        dialog.show();
+                                    }
+                                });
                                 lay.addView(test);
+
                                 //start basic activity and use put extra for all the important info
                             }
                         } catch (JSONException e) {
-
+Log.e("ww",e.getMessage());
                             e.printStackTrace();
                         }
                     }
