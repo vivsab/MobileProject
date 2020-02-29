@@ -50,7 +50,6 @@ public class Buy extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
                         try {
                             JSONArray resp = new JSONArray(response);
                             for(int i =0;i<resp.length();i++){

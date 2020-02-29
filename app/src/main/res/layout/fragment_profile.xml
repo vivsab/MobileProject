@@ -19,31 +19,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/PassV"
-        android:layout_width="118dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="460dp"
-        android:background="@color/Button"
-        android:text="@string/validate"
-        android:textColor="@color/White"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
+        android:id="@+id/SaveP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="460dp"
+        android:layout_marginTop="428dp"
         android:background="@color/Button"
         android:text="@string/save"
         android:textColor="@color/White"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/PassV"
+        android:layout_width="118dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginTop="428dp"
+        android:background="@color/Button"
+        android:text="@string/validate"
+        android:textColor="@color/White"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/FnameP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText9"
+        android:id="@+id/LnameP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText10"
+        android:id="@+id/emailP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
@@ -81,17 +81,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editText11"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="358dp"
-        android:autofillHints="@string/Phone"
-        android:ems="10"
-        android:hint="@string/Phone"
-        android:inputType="phone"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="37dp"
+        android:text="Season Pass Holder:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/emailP" />
+
+    <TextView
+        android:id="@+id/SeaPassVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="37dp"
+        android:text="false"
+        android:textColor="@color/Button"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/emailP" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
