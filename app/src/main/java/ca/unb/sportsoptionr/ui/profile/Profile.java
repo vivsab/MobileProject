@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -108,6 +109,7 @@ public class Profile extends Fragment {
         buttonS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saveProfile(root);
+                Toast.makeText(getContext(),"Profile changes saved!",Toast.LENGTH_LONG).show();
             }
         });
 

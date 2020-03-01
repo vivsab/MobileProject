@@ -33,4 +33,6 @@
     <string name="Date">Date</string>
     <string name="teamH">Date of Game: </string>
     <string name="OriginalOwner">Your Full Name</string>
+
+    <string name="logout">Logout</string>
 </resources>

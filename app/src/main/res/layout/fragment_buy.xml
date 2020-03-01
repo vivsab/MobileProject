@@ -7,8 +7,8 @@
 
 
     <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="694dp"
+        android:layout_width="410dp"
+        android:layout_height="649dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
