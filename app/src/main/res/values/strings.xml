@@ -13,7 +13,7 @@
     <string name="menu_gallery">Sell</string>
     <string name="menu_slideshow">Buy</string>
     <string name="menu_tools">Stats</string>
-
+    <string name="menu_YO">Your Options</string>
 
     <string name="validate">Validate Pass</string>
     <string name="SellO">Sell Option</string>
@@ -31,6 +31,6 @@
     <string name="Price">Price</string>
     <string name="TicketNum">Ticket Number</string>
     <string name="Date">Date</string>
-    <string name="teamH">Home Team</string>
-    <string name="teamA">Away Team</string>
+    <string name="teamH">Date of Game: </string>
+    <string name="OriginalOwner">Your Full Name</string>
 </resources>

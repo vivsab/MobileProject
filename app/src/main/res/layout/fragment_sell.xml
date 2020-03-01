@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/PriceS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="87dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="144dp"
         android:autofillHints="@string/Price"
         android:ems="10"
         android:hint="@string/Price"
@@ -32,66 +32,47 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText12"
+        android:id="@+id/ownerS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="87dp"
-        android:layout_marginTop="190dp"
-        android:autofillHints="@string/Date"
+        android:layout_marginTop="224dp"
+        android:autofillHints="@string/OriginalOwner"
         android:ems="10"
-        android:hint="@string/Date"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="259dp"
-        android:autofillHints="@string/TicketNum"
-        android:ems="10"
-        android:hint="@string/TicketNum"
-        android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="324dp"
-        android:autofillHints="@string/teamH"
-        android:ems="10"
-        android:hint="@string/teamH"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="87dp"
-        android:layout_marginTop="388dp"
-        android:autofillHints="@string/teamA"
-        android:ems="10"
-        android:hint="@string/teamA"
+        android:hint="@string/OriginalOwner"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonSell"
         android:layout_width="115dp"
         android:layout_height="45dp"
         android:layout_marginStart="132dp"
-        android:layout_marginTop="448dp"
+        android:layout_marginTop="380dp"
         android:background="@color/Button"
         android:text="@string/SellO"
         android:textColor="@color/White"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/DatePick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="196dp"
+        android:layout_marginTop="132dp"
+        android:text="Click to Set Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PriceS" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="87dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/teamH"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ownerS" />
 </androidx.constraintlayout.widget.ConstraintLayout>

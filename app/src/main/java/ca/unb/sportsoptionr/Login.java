@@ -2,18 +2,27 @@ package ca.unb.sportsoptionr;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
+import android.se.omapi.Session;
+import android.telephony.SmsManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,8 +35,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.PasswordAuthentication;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 public class Login extends AppCompatActivity {
     int validUser = 0;
@@ -61,7 +74,7 @@ public class Login extends AppCompatActivity {
                                         if(Urlemail.equals(email.getText().toString()) && Urlpass.equals(pass.getText().toString())){
                                             validUser =1;
                                             userID = oneObject.getString("id");
-                                            setLog(userID);
+                                            verifyCode(Urlemail);
 
                                         }
                                     }
@@ -70,10 +83,10 @@ public class Login extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                if(validUser ==1){
+                                if(validUser ==1){//If correct password and email has been entered
                                     validUser =0;
-                                    Intent activity2Intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(activity2Intent);
+
+
                                 }else{
                                     TextView inval = findViewById(R.id.Inval);
                                     inval.setText("Invalid email/password");
@@ -140,4 +153,37 @@ public class Login extends AppCompatActivity {
 
         queue.add(putRequest);
     }
+
+    protected void verifyCode(String Urlemail){
+        //sending email
+
+
+        //setting up alert dialog
+        final EditText input = new EditText(Login.this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
+        builder.setView(input);
+        builder.setTitle("Verification Code")
+                .setMessage("A verification code was sent to your email.")
+                .setCancelable(false)
+                .setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        setLog(userID);
+                        Intent activity2Intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(activity2Intent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        //Creating dialog box
+        AlertDialog dialog  = builder.create();
+        dialog.show();
+    }
+
 }
