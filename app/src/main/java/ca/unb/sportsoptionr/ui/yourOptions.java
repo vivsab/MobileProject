@@ -3,6 +3,7 @@ package ca.unb.sportsoptionr.ui;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import ca.unb.sportsoptionr.R;
 
@@ -87,11 +91,45 @@ String id;
                                                             test.setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
+                                                                    // Set an EditText view to get user input
+                                                                    final EditText input = new EditText(getContext());
+                                                                    input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                                                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                                                    builder.setView(input);
                                                                     builder.setTitle("Option "+optionNum)
-                                                                            .setMessage("Option ID: "+optionNum+"\nPrice: $"+optionPrice+"\nOriginal Owner: "+optionOwner+"\nDate of Event: "+optionDate)
+                                                                            .setMessage("Option ID: "+optionNum+"\nPrice: $"+optionPrice+"\nOriginal Owner: "+optionOwner+"\nDate of Event: "+optionDate+"\n\n\nPlease set your new price:")
                                                                             .setCancelable(false)
-                                                                            .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                                                                            .setPositiveButton("Sell", new DialogInterface.OnClickListener() {
+                                                                                @Override
+                                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                                    try {
+                                                                                       SellOption(root, input.getText().toString(),optionOwner,oneObject.getString("Date"),id);
+                                                                                    } catch (JSONException e) {
+                                                                                        e.printStackTrace();
+                                                                                    }
+                                                                                    RequestQueue queue = Volley.newRequestQueue(getContext());
+                                                                                    String url = "http://5e17926a505bb50014720d41.mockapi.io/Users/"+id+"/option/"+optionNum;
+                                                                                    StringRequest dr = new StringRequest(Request.Method.DELETE, url,
+                                                                                            new Response.Listener<String>()
+                                                                                            {
+                                                                                                @Override
+                                                                                                public void onResponse(String response) {
+                                                                                                    // response
+                                                                                                    Log.d("Response", response);
+                                                                                                }
+                                                                                            },
+                                                                                            new Response.ErrorListener()
+                                                                                            {
+                                                                                                @Override
+                                                                                                public void onErrorResponse(VolleyError error) {
+                                                                                                    // error.
+
+                                                                                                }
+                                                                                            }
+                                                                                    );
+                                                                                    queue.add(dr);
+                                                                                }
+                                                                            }).setNegativeButton("Close", new DialogInterface.OnClickListener() {
                                                                                 @Override
                                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                                 }
@@ -117,11 +155,8 @@ String id;
                                         }
                                     });
 
-// Add the request to the RequestQueue.
+                                    // Add the request to the RequestQueue.
                                     queue.add(stringRequest);
-
-
-
 
                                 }
                             }
@@ -142,5 +177,46 @@ String id;
 
 
     }
+
+    public void SellOption(final View root, final String optionPrice, final String optionOwner, final String optionDate, final String id){
+
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+
+        String url = "http://5e17926a505bb50014720d41.mockapi.io/option";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.getMessage());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<String, String>();
+
+                params.put("owner", optionOwner);
+                params.put("Price",optionPrice);
+                params.put("Date", optionDate);
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
+
+    }
+
 
 }

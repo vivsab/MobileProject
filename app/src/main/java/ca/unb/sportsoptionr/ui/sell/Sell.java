@@ -28,6 +28,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +44,7 @@ public class Sell extends Fragment {
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private GalleryViewModel galleryViewModel;
-
+    private Boolean valid;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -84,8 +88,8 @@ public class Sell extends Fragment {
             }
         };
 
-        Button signUp = root.findViewById(R.id.buttonSell);
-        signUp.setOnClickListener(new View.OnClickListener() {
+        Button sellB = root.findViewById(R.id.buttonSell);
+        sellB.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 RequestQueue queue = Volley.newRequestQueue(getContext());
 
@@ -129,8 +133,60 @@ public class Sell extends Fragment {
 
             }
         });
+        ValidUser(root,sellB);
+
 
 
         return root;
     }
+    public void ValidUser(final View root, final Button sellB){
+        //Determine if user is a season pass holder
+        final RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url ="http://5e17926a505bb50014720d41.mockapi.io/Users";
+        // Request a string response from the provided URL.
+        Log.e("Test", "tessss");
+        final StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONArray resp = new JSONArray(response);
+                            for(int i =0;i<resp.length();i++){
+                                final JSONObject oneObject = resp.getJSONObject(i);
+                                int logged = oneObject.getInt("logged");
+
+                                if(logged==-1){
+                                    Log.e("Test", (String.valueOf(oneObject.getBoolean("SeasonPassHolder"))));
+                                    valid = oneObject.getBoolean("SeasonPassHolder");
+                                    if(valid){
+                                        sellB.setEnabled(true);
+                                    }else {
+                                        TextView inval = root.findViewById(R.id.sellT);
+                                        inval.setText("You must be a valid season holder to sell options!");
+                                        inval.setTextColor(Color.RED);
+                                        sellB.setEnabled(false);
+                                        sellB.setBackgroundColor(Color.GRAY);
+
+                                    }
+
+                                }
+                            }
+                        } catch (JSONException e) {
+                            Log.e("Error",e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
 }
