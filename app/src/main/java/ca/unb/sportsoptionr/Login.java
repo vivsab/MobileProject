@@ -39,6 +39,7 @@ import java.net.PasswordAuthentication;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -154,8 +155,64 @@ public class Login extends AppCompatActivity {
         queue.add(putRequest);
     }
 
-    protected void verifyCode(String Urlemail){
+    /**
+     * Returns a value between 0 (inclusive) and the value you supply (exclusive).
+     * So supplying `10` will result in a number between 0 and 9.
+     */
+    private int getRandomInt(int ceilingExclusive) {
+        Random random = new Random();
+        return random.nextInt(ceilingExclusive);
+    }
+
+    private String getVerificationCode(){
+        int ones = getRandomInt(10);
+        int tens = getRandomInt(10)* 10;
+        int hunderds = getRandomInt(10)*100;
+        int thousands = getRandomInt(10)*1000;
+
+        int value = ones + tens + hunderds + thousands;
+
+        return Integer.toString(value);
+    }
+
+    protected void verifyCode(final String Urlemail){
         //sending email
+        final String code = getVerificationCode();
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
+        String url = "http://34.66.82.113:8000/api/accounts/send/code/";
+        StringRequest postRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.getMessage());
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<String, String>();
+
+                params.put("email", Urlemail);
+                params.put("code", code);
+
+                return params;
+            }
+        };
+        queue.add(postRequest);
 
 
         //setting up alert dialog
@@ -170,9 +227,12 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        setLog(userID);
-                        Intent activity2Intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(activity2Intent);
+                        //Verify codes match
+                        if(input.getText().toString().equals(code)){
+                            setLog(userID);
+                            Intent activity2Intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(activity2Intent);
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
