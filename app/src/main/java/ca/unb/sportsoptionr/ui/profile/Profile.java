@@ -1,16 +1,20 @@
 package ca.unb.sportsoptionr.ui.profile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -49,6 +54,8 @@ public class Profile extends Fragment {
     private String TAG = "External Activity";
     String currentPhotoPath;
     String id;
+    ImageView uploadImage;
+    View changeRoot;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -95,7 +102,11 @@ public class Profile extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_profile, container, false);
+        changeRoot = root;
         final TextView textView = root.findViewById(R.id.text_home);
+
+        uploadImage = root.findViewById(R.id.validationImage);
+
         homeViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -108,7 +119,10 @@ public class Profile extends Fragment {
         Button buttonS = root.findViewById(R.id.SaveP);
         buttonS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                saveProfile(root);
+
+
+
+                saveProfile(root, true);
                 Toast.makeText(getContext(),"Profile changes saved!",Toast.LENGTH_LONG).show();
             }
         });
@@ -165,11 +179,13 @@ public class Profile extends Fragment {
                                     final EditText FnameP = root.findViewById(R.id.FnameP);
                                     final EditText LnameP = root.findViewById(R.id.LnameP);
                                     final EditText emailP = root.findViewById(R.id.emailP);
+                                    final TextView season_pass_validation = root.findViewById(R.id.SeaPassVal);
 
 
                                     FnameP.setText(oneObject.getString("FName"));
                                     LnameP.setText(oneObject.getString("LName"));
                                     emailP.setText(oneObject.getString("email"));
+                                    season_pass_validation.setText(oneObject.getString("SeasonPassHolder"));
 
                                 }
                             }
@@ -191,7 +207,70 @@ public class Profile extends Fragment {
 
     }
 
-    public void saveProfile(final View root){
+    private void uploadImage(final View root){
+        File imgFile = new  File(currentPhotoPath);
+        if(imgFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            uploadImage.setImageBitmap(myBitmap);
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://34.66.82.113:8000/api/season_passes/vision/string/create/",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            final TextView season_pass_validation = changeRoot.findViewById(R.id.SeaPassVal);
+                            season_pass_validation.setText("True");
+
+                            saveProfile(root, false);
+
+                            String Response = jsonObject.getString("response");
+                            Toast.makeText(getContext(),"Validated Season Ticket Holder",Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(),"Error: Try taking the picture again.",Toast.LENGTH_LONG).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String, String>  params = new HashMap<String, String>();
+
+                File imgFile = new  File(currentPhotoPath);
+                if(imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    String imageBase64String = imageToString(myBitmap);
+                    params.put("image", imageBase64String);
+                    params.put("user", "root");
+                    params.put("team", "");
+                    params.put("name_on_season_pass", "");
+                    params.put("pass_id", "");
+                }
+
+                return params;
+            }
+        };
+        MySingleton.getInstance(getContext()).addToRequestQue(stringRequest);
+    }
+
+    private String imageToString(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imgBytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
+    }
+
+    public void saveProfile(final View root, boolean firstTime){
+
+        if(firstTime){
+            uploadImage(root);
+        }
 
         final RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "http://5e17926a505bb50014720d41.mockapi.io/Users/"+id;
@@ -221,10 +300,12 @@ public class Profile extends Fragment {
                 final EditText FnameP = root.findViewById(R.id.FnameP);
                 final EditText LnameP = root.findViewById(R.id.LnameP);
                 final EditText emailP = root.findViewById(R.id.emailP);
+                final TextView season_pass_validation = root.findViewById(R.id.SeaPassVal);
 
                 params.put("FName", FnameP.getText().toString());
                 params.put("LName", LnameP.getText().toString());
                 params.put("email", emailP.getText().toString());
+                params.put("SeasonPassHolder", season_pass_validation.getText().toString());
 
                 return params;
             }
